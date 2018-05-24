@@ -153,6 +153,58 @@ LOCK TABLES `detil_isi_dapur` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `market_bahan`
+--
+
+DROP TABLE IF EXISTS `market_bahan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `market_bahan` (
+  `idbahan` int(11) DEFAULT NULL,
+  `idplayer` int(11) DEFAULT NULL,
+  KEY `pk_idbahan_mb_idx` (`idbahan`),
+  KEY `pk_idplayer_mb_idx` (`idplayer`),
+  CONSTRAINT `pk_idbahan_mb` FOREIGN KEY (`idbahan`) REFERENCES `bahan` (`idbahan`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `pk_idplayer_mb` FOREIGN KEY (`idplayer`) REFERENCES `player` (`id_player`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `market_bahan`
+--
+
+LOCK TABLES `market_bahan` WRITE;
+/*!40000 ALTER TABLE `market_bahan` DISABLE KEYS */;
+/*!40000 ALTER TABLE `market_bahan` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `market_masakan`
+--
+
+DROP TABLE IF EXISTS `market_masakan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `market_masakan` (
+  `idmasakan` int(11) DEFAULT NULL,
+  `idplayer` int(11) DEFAULT NULL,
+  KEY `fk_idplayer_mm_idx` (`idplayer`),
+  KEY `fk_idmasakan_mm_idx` (`idmasakan`),
+  CONSTRAINT `fk_idmasakan_mm` FOREIGN KEY (`idmasakan`) REFERENCES `masakan` (`id_masakan`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_idplayer_mm` FOREIGN KEY (`idplayer`) REFERENCES `player` (`id_player`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `market_masakan`
+--
+
+LOCK TABLES `market_masakan` WRITE;
+/*!40000 ALTER TABLE `market_masakan` DISABLE KEYS */;
+/*!40000 ALTER TABLE `market_masakan` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `masakan`
 --
 
@@ -325,6 +377,76 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'vkvxweok_mbd_05111640000092'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `sp_beli_bahan` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_beli_bahan`(
+	p_idbahan int,
+    p_idpenjual int,
+    p_idpembeli int
+)
+BEGIN
+	set @harga = (select harga_jual from bahan where idbahan = p_idbahan);
+    set @uangpembeli = (select money from player where id_player = p_idpembeli);
+    set @uangpenjual = (select money from player where id_player = p_idpenjual);
+    if @uangpembeli < @harga then
+		select -1, "uang tidak cukup";
+	else
+		update player set money = @uangpembeli - @harga where id_player = p_idpembeli;
+        update player set money = @uangpenjual + @harga where id_player = p_idpenjual;
+        update detil_chef_bahan set jumlah = (select jumlah from detil_chef_bahan where idplayer = p_idpembeli and idbahan = p_idbahan) + 1
+        where idplayer = p_idpembeli and idbahan = p_idbahan;
+        delete from market_bahan where idbahan = p_idbahan and idplayer = p_idpenjual limit 1;
+        select 0, "beli bahan berhasil";
+	end if;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_beli_masakan` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_beli_masakan`(
+	p_idmasakan int,
+    p_idpenjual int,
+    p_idpembeli int
+)
+BEGIN
+	set @harga = (select harga_masakan from masakan where id_masakan = p_idmasakan);
+    set @uangpembeli = (select money from player where id_player = p_idpembeli);
+    set @uangpenjual = (select money from player where id_player = p_idpenjual);
+    if @uangpembeli < @harga then
+		select -1, "uang tidak cukup";
+	else
+		update player set money = @uangpembeli - @harga where id_player = p_idpembeli;
+        update player set money = @uangpenjual + @harga where id_player = p_idpenjual;
+        update detil_chef_masakan set jumlah = (select jumlah from detil_chef_masakan where idplayer = p_idpembeli and idmasakan = p_idmasakan) + 1
+        where idplayer = p_idpembeli and idmasakan = p_idmasakan;
+        delete from market_masakan where idmasakan = p_idmasakan and idplayer = p_idpenjual limit 1;
+        select 0, "beli  masakan berhasil";
+	end if;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `sp_cek_bisa_memasak` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -417,6 +539,70 @@ BEGIN
 		select 1, 'ubah password berhasil';
 	else
 		select 0, 'old password salah';
+	end if;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_jual_bahan` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_jual_bahan`(
+	p_idbahan int,
+    p_idplayer int
+)
+BEGIN
+	if not exists(select 1 from detil_chef_bahan where idbahan = p_idbahan and idplayer = p_idplayer) then
+		set @jumlah = 0;
+	else
+		set @jumlah = (select jumlah from detil_chef_bahan where idbahan = p_idbahan and idplayer = p_idplayer);
+    end if;
+    if @jumlah = 0 then
+		select -1, "bahan kurang";
+	else 
+		update detil_chef_bahan set jumlah = @jumlah - 1 where idplayer = p_idplayer and idbahan = p_idbahan;
+        insert into market_bahan values (p_idbahan, p_idplayer);
+	end if;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_jual_masakan` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_jual_masakan`(
+	p_idmasakan int,
+    p_idplayer int
+)
+BEGIN
+	if not exists(select 1 from detil_chef_masakan where idmasakan = p_idmasakan and idplayer = p_idplayer) then
+		set @jumlah = 0;
+	else
+		set @jumlah = (select jumlah from detil_chef_masakan where idmasakan = p_idmasakan and idplayer = p_idplayer);
+    end if;
+    if @jumlah = 0 then
+		select -1, "masakan kurang";
+	else 
+		update detil_chef_masakan set jumlah = @jumlah - 1 where idplayer = p_idplayer and idmasakan = p_idmasakan;
+        insert into market_masakan values (p_idmasakan, p_idplayer);
 	end if;
 END ;;
 DELIMITER ;
@@ -729,4 +915,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-24 14:06:13
+-- Dump completed on 2018-05-24 14:54:19
