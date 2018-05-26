@@ -13,6 +13,7 @@
             background-color: #DADADA;
         }
         body > .grid {
+            /*padding-top: 40px !important;*/
             height: 100%;
         }
         .image {
@@ -36,7 +37,7 @@
                 <a class="item" data-tab="signup">Signup</a>
             </div>
             <div class="ui bottom attached tab segment active" data-tab="login">
-                <form action="login.php" method="post" class="ui form" enctype="multipart/form-data">
+                <form action="actions/login.php" method="post" class="ui form" enctype="multipart/form-data">
                     <div class="ui stacked segment">
                         <div class="field">
                             <div class="ui left icon input">
@@ -61,7 +62,7 @@
                 ?>
             </div>
             <div class="ui bottom attached tab segment" data-tab="signup">
-                <form action="register.php" method="post" class="ui form">
+                <form action="actions/register.php" method="post" class="ui form">
                     <div class="ui stacked segment">
                         <div class="field">
                             <div class="ui left icon input">
