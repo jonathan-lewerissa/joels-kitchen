@@ -24,7 +24,7 @@
     	$_SESSION["password"]=$val["PASSWORD"];
     	$_SESSION["money"]=$val["money"];
         $_SESSION["kompor_size"]=$val["kompor_size"];
-    	header("Location:index.php",true,301);
+    	header("Location:dashboard.php",true,301);
     	exit();
     }
 ?>
