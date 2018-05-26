@@ -21,7 +21,7 @@
         .container > .grid {
             padding-top: 50px;
         }
-        .column > .sticky.menu {
+        .sticky {
             padding-top: 20px;
         }
 
@@ -32,19 +32,25 @@
         <h1 class="ui center aligned dividing huge header">Dashboard</h1>
         <div class="ui top aligned center aligned grid">
             <div class="four wide column">
-                <div class="ui vertical fluid attached tabular sticky menu">
-                    <a class="item active" data-tab="kitchen">
-                        Kitchen
-                    </a>
-                    <a class="item" data-tab="storage">
-                        Storage
-                    </a>
-                    <a class="item" data-tab="food">
-                        Food market
-                    </a>
-                    <a class="item" data-tab="ingredient">
-                        Ingredients market
-                    </a>
+                <div class="ui sticky">
+                    <div class="ui vertical fluid attached tabular menu">
+                        <a class="item active" data-tab="kitchen">
+                            Kitchen
+                        </a>
+                        <a class="item" data-tab="storage">
+                            Storage
+                        </a>
+                        <a class="item" data-tab="food">
+                            Food market
+                        </a>
+                        <a class="item" data-tab="ingredient">
+                            Ingredients market
+                        </a>
+                    </div>
+                    <div class="ui icon input">
+                        <input placeholder="Search..." type="text">
+                        <i class="circular search icon"></i>
+                    </div>
                 </div>
             </div>
             <div class="twelve wide column">
