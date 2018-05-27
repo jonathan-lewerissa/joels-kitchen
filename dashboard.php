@@ -37,6 +37,9 @@
                         <a class="item active" data-tab="kitchen">
                             Kitchen
                         </a>
+                        <a class="item" data-tab="food-menu">
+                            Food menu
+                        </a>
                         <a class="item" data-tab="storage">
                             Storage
                         </a>
@@ -46,128 +49,45 @@
                         <a class="item" data-tab="ingredient">
                             Ingredients market
                         </a>
-                        <div class="ui icon input" >
-                            <input placeholder="Search in kitchen" type="text">
-                            <i class="circular search icon"></i>
-                        </div>
                     </div>
                 </div>
             </div>
-            <div class="twelve wide column">
-                <div class="ui grid" id="context1">
+            <div class="twelve wide column" id="context1">
+                <div class="ui grid" >
                     <div class="ui attached tab segment active" data-tab="kitchen">
-                        <button action="cooking.php"><a href="cooking.php">Cook</a></button>
                         <div class="ui divided items">
                             <div class="item">
                                 <div class="image">
                                     <img src="images/wireframe/image.png">
                                 </div>
                                 <div class="content">
-                                    <a class="header">Satu</a>
+                                    <a class="header">Kompor Satu</a>
                                     <div class="meta">
-                                        <span>Ini meta / harga</span>
+                                        <span>Deskripsi yang dimasak</span>
                                     </div>
                                     <div class="description">
-                                        <p>Ini deskripsi</p>
+                                        <p>Ini ceritanya kompor, jadi nanti bisa lihat makanan apa aja yang lagi dimasak disini</p>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="ui attached tab segment" data-tab="food-menu">
+                        <div class="ui divided items">
                             <div class="item">
                                 <div class="image">
                                     <img src="images/wireframe/image.png">
                                 </div>
                                 <div class="content">
-                                    <a class="header">Dua</a>
+                                    <a class="header">Nama makanan</a>
                                     <div class="meta">
-                                        <span>Ini meta / harga</span>
+                                        <span>Harga jual makanan sekarang</span>
                                     </div>
                                     <div class="description">
-                                        <p>Ini deskripsi</p>
+                                        <p>Deskripsi bahan-bahannya</p>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="image">
-                                    <img src="images/wireframe/image.png">
-                                </div>
-                                <div class="content">
-                                    <a class="header">Tiga</a>
-                                    <div class="meta">
-                                        <span>Ini meta / harga</span>
-                                    </div>
-                                    <div class="description">
-                                        <p>Ini deskripsi</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="image">
-                                    <img src="images/wireframe/image.png">
-                                </div>
-                                <div class="content">
-                                    <a class="header">Empat</a>
-                                    <div class="meta">
-                                        <span>Ini meta / harga</span>
-                                    </div>
-                                    <div class="description">
-                                        <p>Ini deskripsi</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="image">
-                                    <img src="images/wireframe/image.png">
-                                </div>
-                                <div class="content">
-                                    <a class="header">Satu</a>
-                                    <div class="meta">
-                                        <span>Ini meta / harga</span>
-                                    </div>
-                                    <div class="description">
-                                        <p>Ini deskripsi</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="image">
-                                    <img src="images/wireframe/image.png">
-                                </div>
-                                <div class="content">
-                                    <a class="header">Dua</a>
-                                    <div class="meta">
-                                        <span>Ini meta / harga</span>
-                                    </div>
-                                    <div class="description">
-                                        <p>Ini deskripsi</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="image">
-                                    <img src="images/wireframe/image.png">
-                                </div>
-                                <div class="content">
-                                    <a class="header">Tiga</a>
-                                    <div class="meta">
-                                        <span>Ini meta / harga</span>
-                                    </div>
-                                    <div class="description">
-                                        <p>Ini deskripsi</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="image">
-                                    <img src="images/wireframe/image.png">
-                                </div>
-                                <div class="content">
-                                    <a class="header">Empat</a>
-                                    <div class="meta">
-                                        <span>Ini meta / harga</span>
-                                    </div>
-                                    <div class="description">
-                                        <p>Ini deskripsi</p>
-                                    </div>
+                                    <button class="ui right floated button" action="cooking.php">Cook this!</button>
+<!--                                    buat passing ke parameter cooking.php pke GET aja, mungkin bisa pke modal juga-->
                                 </div>
                             </div>
                         </div>
@@ -188,48 +108,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="item">
-                                <div class="image">
-                                    <img src="images/wireframe/image.png">
-                                </div>
-                                <div class="content">
-                                    <a class="header">Dua</a>
-                                    <div class="meta">
-                                        <span>Ini meta / harga</span>
-                                    </div>
-                                    <div class="description">
-                                        <p>Ini deskripsi</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="image">
-                                    <img src="images/wireframe/image.png">
-                                </div>
-                                <div class="content">
-                                    <a class="header">Tiga</a>
-                                    <div class="meta">
-                                        <span>Ini meta / harga</span>
-                                    </div>
-                                    <div class="description">
-                                        <p>Ini deskripsi</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="image">
-                                    <img src="images/wireframe/image.png">
-                                </div>
-                                <div class="content">
-                                    <a class="header">Empat</a>
-                                    <div class="meta">
-                                        <span>Ini meta / harga</span>
-                                    </div>
-                                    <div class="description">
-                                        <p>Ini deskripsi</p>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                     <div class="ui attached tab segment" data-tab="food">
@@ -360,10 +239,8 @@
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
     <script>
         $(document).ready(function(){
-            $('#side-menu .menu .item').tab({
-                context: 'parent'
-            });
-            $('.ui.sticky').sticky({
+            $('.menu .item').tab();
+            $('.ui .sticky').sticky({
                 context: '#context1'
             });
         });
