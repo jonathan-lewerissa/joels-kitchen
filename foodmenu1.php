@@ -25,10 +25,18 @@ while($val = mysqli_fetch_assoc($N)){
     }
     echo "</p>";
     echo "</div>";
-    echo "<form action = 'cooking.php' method='get'>";
-    echo "<input type='hidden' name='id' value=".$val["id_masakan"].">";
-    echo "<button class='ui right floated button' type ='submit'>Cook this!</button>";
-    echo "</form>";
+    $sq = "call sp_bisa_masak(".$_SESSION["idplayer"].", ".$val["id_masakan"].")";
+    //echo "$sq";
+    $conn = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
+    $Q = mysqli_query($conn,$sq);
+    $q = mysqli_fetch_assoc($Q);
+    if(!isset($q["error"])){
+        echo "<form action = 'cooking.php' method='get'>";
+        echo "<input type='hidden' name='id' value=".$val["id_masakan"].">";
+        echo "<button class='ui right floated button' type ='submit'>Cook this!</button>";
+        echo "</form>";
+    }
+    else echo "Bahan kurang / dapur sudah penuh.";
     echo "</div>";
     echo "</div>";
 }

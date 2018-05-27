@@ -4,6 +4,7 @@
 	$N=mysqli_query($conn,$sql);
 
 	while($val=mysqli_fetch_assoc($N)){
+		if($val["jumlah"]==0) continue;
 		$conn = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
 		$sql = "call sp_show_detil_bahan(".$val["idbahan"].")";
 		$n=mysqli_query($conn,$sql);
@@ -25,8 +26,9 @@
 	    $q = mysqli_fetch_assoc($Q);
 	    echo            "<p>Stok : ".$q["jumlah"]."</p>";
 	    echo        "</div>";
-	    echo        "<form action='entahkemana.php'>";
-	    echo            "<button class='ui button'>";
+	    echo        "<form action='sellbahan.php' method='get'>";
+	    echo "<input type='hidden' name='id_bahan' value=".$val["idbahan"].">";
+	    echo            "<button type='submit' class='ui button'>";
 	    echo                "Sell";
 	    echo            "</button>";
 	    echo        "</form>";
