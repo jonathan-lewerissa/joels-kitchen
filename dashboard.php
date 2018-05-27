@@ -54,10 +54,14 @@
                 <a class="item" data-tab="ingredient-market">
                     Ingredients market
                 </a>
+                <a class="item" data-tab="scoreboard">
+                    Scoreboard
+                </a>
                 <div class="right menu">
                     <div class="ui simple dropdown item">
                         <i class="user icon"></i>
                         <?=$_SESSION['username']?>
+                        <?= ', '.$_SESSION['money'].' coins'?>
                         <div class="menu">
                             <a class="item">Update user info</a>
                             <a class="item" href="actions/logout.php">Logout</a>
@@ -177,6 +181,21 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="ui attached tab segment" data-tab="scoreboard">
+                    <table class="ui celled padded table">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Wealth</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                include 'user_rank.php';
+                            ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>  
         </div>
