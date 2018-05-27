@@ -39,24 +39,28 @@
     <div class="ui container">
         <div class="ui large top fixed menu">
             <div class="ui container">
-                <a class="item active" data-tab="kitchen">
+                <a class="item active" data-tab="tutorial">
+                    Tutorial
+                </a>
+                <a class="item" data-tab="kitchen" id="kitchen-tab">
                     Kitchen
                 </a>
-                <a class="item" data-tab="food-menu">
+                <a class="item" data-tab="food-menu" id="food-menu-tab">
                     Food menu
                 </a>
-                <a class="item" data-tab="storage">
+                <a class="item" data-tab="storage" id="storage-tab">
                     Storage
                 </a>
-                <a class="item" data-tab="food-market">
+                <a class="item" data-tab="food-market" id="food-market-tab">
                     Food market
                 </a>
-                <a class="item" data-tab="ingredient-market">
+                <a class="item" data-tab="ingredient-market" id="ingredient-market-tab">
                     Ingredients market
                 </a>
-                <a class="item" data-tab="scoreboard">
+                <a class="item" data-tab="scoreboard" id="scoreboard-tab">
                     Scoreboard
                 </a>
+
                 <div class="right menu">
                     <div class="ui simple dropdown item">
                         <i class="user icon"></i>
@@ -72,7 +76,24 @@
         </div>
         <div class="ui top aligned center aligned grid">
             <div class="sixteen wide column">
-                <div class="ui attached tab segment active" data-tab="kitchen">
+                <div class="ui attached tab segment active" data-tab="tutorial">
+                    <h3 class="ui header">
+                        Dalam permainan ini, anda dapat memasak dan menjual makanan-makanan.
+                        <br><br>
+                        Tujuan permainan ini adalah untuk mendapatkan pemasukan sebesar-besarnya.
+                    </h3>
+                    <br>
+                    <ul class="ui list">
+                        <li>Untuk memasak makanan, pergilah menuju tab <strong>"Food menu"</strong>, kemudian lihat progress-nya di <strong>"Kitchen"</strong></li>
+                        <li>Untuk membeli bahan makanan, pergilah menuju tab <strong>"Ingredients market"</strong></li>
+                        <li>Untuk menjual makanan, pergilah menuju tab <strong>"Food market"</strong></li>
+                        <li>Harga setiap barang dalam game ini akan berubah-ubah <strong>setiap hari</strong></li>
+                    </ul>
+                    <h4 class="ui header">
+                        "May the best player win!"
+                    </h4>
+                </div>
+                <div class="ui attached tab segment" data-tab="kitchen">
                     <div class="ui divided items">
                         <?php
                         include 'kitchen1.php';
@@ -203,12 +224,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
     <script>
-        $(document).ready(function(){
-            $('.menu .item').tab();
-            $('.ui .sticky').sticky({
-                context: '#context1'
-            });
-        });
+        $('.menu .item').tab();
     </script>
 </body>
 </html>
