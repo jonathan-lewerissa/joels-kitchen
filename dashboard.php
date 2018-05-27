@@ -1,3 +1,7 @@
+<?php
+    session_start();
+    include("include/_conn.php"); // buat ngambil variable $conn
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +23,7 @@
             max-width: 450px;
         }
         .container > .grid {
-            padding-top: 50px;
+            padding-top: 6em !important;
         }
         .sticky {
             padding-top: 20px;
@@ -29,7 +33,19 @@
 </head>
 <body>
     <div class="ui container">
-        <h1 class="ui center aligned dividing huge header">Dashboard</h1>
+        <div class="ui large top fixed menu">
+            <div class="ui container">
+                <div class="right menu">
+                    <div class="ui simple dropdown item">
+                        <i class="user icon"></i>
+                        <div class="menu">
+                            <a class="item">Update user info</a>
+                            <a class="item">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="ui top aligned center aligned grid">
             <div class="three wide column">
                 <div class="ui sticky">
@@ -75,7 +91,6 @@
                     <div class="ui attached tab segment" data-tab="food-menu">
                         <div class="ui divided items">
                             <?php
-                            $conn = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
                             $sql = "call sp_show_masakan()";
                             $N=mysqli_query($conn,$sql);
                             //echo "$sql";
@@ -92,8 +107,7 @@
                                 echo "<div class='description'>";
                                 $sq = "call sp_list_bahan(".$val["id_masakan"].")";
                                 //echo "$sq";
-                                $con = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
-                                $Q = mysqli_query($con,$sq);
+                                $Q = mysqli_query($conn,$sq);
                                 //echo mysqli_fetch_assoc($Q);
                                 echo "<p>";
                                 while($q = mysqli_fetch_assoc($Q)){
@@ -103,67 +117,13 @@
                                 echo "</div>";
                                 echo "<form action = 'cooking.php' method='get'>";
                                 echo "<input type='hidden' name='id' value=".$val["id_masakan"].">";
-                                echo "<button class='ui right floated button'type ='submit'>Cook this!</button>";
+                                echo "<button class='ui right floated button' type ='submit'>Cook this!</button>";
                                 echo "</form>";
                                 echo "</div>";
                                 echo "</div>";
                             }
                             ?>
 
-                        </div>
-                        <div class="ui divided items">
-                            <div class="item">
-                                <div class="image">
-                                    <img src="images/wireframe/image.png">
-                                </div>
-                                <div class="content">
-                                    <a class="header">Nama makanan</a>
-                                    <div class="meta">
-                                        <span>Harga jual makanan sekarang</span>
-                                    </div>
-                                    <div class="description">
-                                        <p>Deskripsi bahan-bahannya</p>
-                                    </div>
-                                    <button class="ui right floated button" action="cooking.php">Cook this!</button>
-                                    <!-- buat passing ke parameter cooking.php pke GET aja, mungkin bisa pke modal juga-->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui divided items">
-                            <div class="item">
-                                <div class="image">
-                                    <img src="images/wireframe/image.png">
-                                </div>
-                                <div class="content">
-                                    <a class="header">Nama makanan</a>
-                                    <div class="meta">
-                                        <span>Harga jual makanan sekarang</span>
-                                    </div>
-                                    <div class="description">
-                                        <p>Deskripsi bahan-bahannya</p>
-                                    </div>
-                                    <button class="ui right floated button" action="cooking.php">Cook this!</button>
-                                    <!-- buat passing ke parameter cooking.php pke GET aja, mungkin bisa pke modal juga-->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui divided items">
-                            <div class="item">
-                                <div class="image">
-                                    <img src="images/wireframe/image.png">
-                                </div>
-                                <div class="content">
-                                    <a class="header">Nama makanan</a>
-                                    <div class="meta">
-                                        <span>Harga jual makanan sekarang</span>
-                                    </div>
-                                    <div class="description">
-                                        <p>Deskripsi bahan-bahannya</p>
-                                    </div>
-                                    <button class="ui right floated button" action="cooking.php">Cook this!</button>
-                                    <!-- buat passing ke parameter cooking.php pke GET aja, mungkin bisa pke modal juga-->
-                                </div>
-                            </div>
                         </div>
                         <div class="ui divided items">
                             <div class="item">
@@ -289,9 +249,9 @@
     <script>
         $(document).ready(function(){
             $('.menu .item').tab();
-            // $('.ui .sticky').sticky({
-            //     context: '#context1'
-            // });
+            $('.ui .sticky').sticky({
+                context: '#context1'
+            });
         });
     </script>
 </body>
