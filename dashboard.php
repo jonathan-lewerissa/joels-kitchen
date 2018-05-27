@@ -67,7 +67,23 @@
                         <?=$_SESSION['username']?>
                         <?= ', '.$_SESSION['money'].' coins'?>
                         <div class="menu">
-                            <a class="item">Update user info</a>
+                            <a class="item" id="changepass">Update password</a>
+                            <div class="ui modal">
+                                <div class="header">
+                                    Change password
+                                </div>
+                                <div class="ui bottom attached center aligned segment">
+                                    <form action="actions/changepassword.php" method="post">
+                                        <div class="ui input">
+                                            <input placeholder="Old password" type="password" name="oldpassword">
+                                        </div>
+                                        <div class="ui input">
+                                            <input placeholder="New password" type="password" name="newpassword">
+                                        </div>
+                                        <button class="ui positive button" type="submit"> Change password</button>
+                                    </form>
+                                </div>
+                            </div>
                             <a class="item" href="actions/logout.php">Logout</a>
                         </div>
                     </div>
@@ -176,6 +192,7 @@
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
     <script>
         $('.menu .item').tab();
+        $('.ui .modal').modal('attach events','#changepass','show');
     </script>
 </body>
 </html>

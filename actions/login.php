@@ -14,7 +14,7 @@
     if(isset($val["error"])){
         echo "hehe";
         $_SESSION["canlogin"]=false;
-        header("Location:index.php");
+        header("Location: ../index.php");
         exit();
     }
     else{
