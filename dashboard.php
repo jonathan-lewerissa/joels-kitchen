@@ -1,3 +1,10 @@
+<?php
+    session_start();
+    include("include/_conn.php"); // buat ngambil variable $conn
+    if(!isset($_SESSION["login"])||!$_SESSION["login"]){
+        header("Location: index.php");
+    }
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +26,7 @@
             max-width: 450px;
         }
         .container > .grid {
-            padding-top: 50px;
+            padding-top: 6em !important;
         }
         .sticky {
             padding-top: 20px;
@@ -29,7 +36,19 @@
 </head>
 <body>
     <div class="ui container">
-        <h1 class="ui center aligned dividing huge header">Dashboard</h1>
+        <div class="ui large top fixed menu">
+            <div class="ui container">
+                <div class="right menu">
+                    <div class="ui simple dropdown item">
+                        <i class="user icon"></i>
+                        <div class="menu">
+                            <a class="item">Update user info</a>
+                            <a class="item">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="ui top aligned center aligned grid">
             <div class="three wide column">
                 <div class="ui sticky">
@@ -56,20 +75,38 @@
                 <div class="ui grid" id="context1">
                     <div class="ui attached tab segment active" data-tab="kitchen">
                         <div class="ui divided items">
-                            <div class="item">
-                                <div class="image">
-                                    <img src="images/wireframe/image.png">
-                                </div>
-                                <div class="content">
-                                    <a class="header">Kompor Satu</a>
-                                    <div class="meta">
-                                        <span>Deskripsi yang dimasak</span>
-                                    </div>
-                                    <div class="description">
-                                        <p>Ini ceritanya kompor, jadi nanti bisa lihat makanan apa aja yang lagi dimasak disini</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <?php
+                            $conn = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
+                            $sql = "call sp_show_dapur(".$_SESSION["idplayer"].")";
+                            //echo $sql;
+                            $N=mysqli_query($conn,$sql);
+                            while($val = mysqli_fetch_assoc($N)){
+                                echo "<div class='item'>";
+                                echo"<div class='image'>";
+                                echo"<img src='images/wireframe/image.png'>";
+                                echo"</div>";
+                                echo"<div class='content'>";
+                                $conn = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
+                                $sq="call sp_show_nama_masakan(".$val["idmasakan"].")";
+                                $que = mysqli_query($conn,$sq);
+                                $hsl = mysqli_fetch_assoc($que);
+                                echo"<a class='header'>".$hsl["nama_masakan"]."</a>";
+                                echo "<div class='meta'>";
+                                $sq = "call sp_diff_second(".$val["idmasakan"].", ".$_SESSION["idplayer"].", ".$val["nomor_kompor"].")";
+                                //echo $sq;
+                                $conn = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
+                                $n=mysqli_query($conn,$sq);
+                                $v=mysqli_fetch_assoc($n);
+                                if($v["diff"]==0) echo "<span>Sudah matang!</span>";
+                                else echo "<span>Tunggu ".$v["diff"]." lagi.</span>";
+                                echo"</div>";
+                                echo"<div class='description'>";
+                                echo"<p>Ini ceritanya kompor, jadi nanti bisa lihat makanan apa aja yang lagi dimasak disini</p>";
+                                echo"</div>";
+                                echo"</div>";
+                                echo"</div>";
+                            }
+                            ?>
                         </div>
                     </div>
                     <div class="ui attached tab segment" data-tab="food-menu">
@@ -91,9 +128,9 @@
                                 echo "</div>";
                                 echo "<div class='description'>";
                                 $sq = "call sp_list_bahan(".$val["id_masakan"].")";
-                                //echo "$sq";
-                                $con = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
-                                $Q = mysqli_query($con,$sq);
+                                echo "$sq";
+                                $conn = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
+                                $Q = mysqli_query($conn,$sq);
                                 //echo mysqli_fetch_assoc($Q);
                                 echo "<p>";
                                 while($q = mysqli_fetch_assoc($Q)){
@@ -103,7 +140,7 @@
                                 echo "</div>";
                                 echo "<form action = 'cooking.php' method='get'>";
                                 echo "<input type='hidden' name='id' value=".$val["id_masakan"].">";
-                                echo "<button class='ui right floated button'type ='submit'>Cook this!</button>";
+                                echo "<button class='ui right floated button' type ='submit'>Cook this!</button>";
                                 echo "</form>";
                                 echo "</div>";
                                 echo "</div>";
@@ -217,9 +254,9 @@
     <script>
         $(document).ready(function(){
             $('.menu .item').tab();
-            // $('.ui .sticky').sticky({
-            //     context: '#context1'
-            // });
+            $('.ui .sticky').sticky({
+                context: '#context1'
+            });
         });
     </script>
 </body>
