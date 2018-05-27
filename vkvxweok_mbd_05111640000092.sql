@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 27, 2018 at 02:18 AM
+-- Generation Time: May 27, 2018 at 09:33 AM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.0.29
 
@@ -130,6 +130,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_jual_masakan` (`p_idmasakan` INT
 	end if;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_list_bahan` (IN `p_idmasakan` INT)  NO SQL
+select * from bahan cross join detil_bahan_masakan
+where detil_bahan_masakan.idmasakan = p_idmasakan and detil_bahan_masakan.idbahan = bahan.idbahan$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_login_player` (IN `p_username` VARCHAR(45), IN `p_password` VARCHAR(100))  BEGIN
 	IF EXISTS(SELECT 1 FROM `player` 
 		where `username`=p_username and `password`= md5(p_password)) THEN
@@ -149,6 +153,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_register_player` (IN `p_username
 		select -1 as error, "Failure! Email already used.";
 	end if;
 END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_show_masakan` ()  NO SQL
+select * from masakan$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_update_dapur_dan_masakan` (`p_id_player` INT, `p_no_kompor` INT)  BEGIN
 	set @id = (select idmasakan from detil_isi_dapur where idchef = p_id_player and nomor_kompor = p_no_kompor);
