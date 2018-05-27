@@ -124,6 +124,11 @@
                                 <div class="description">
                                     <p>Ini deskripsi</p>
                                 </div>
+                                <form action="entahkemana.php">
+                                    <button class="ui button">
+                                        Sell
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -143,6 +148,11 @@
                                 <div class="description">
                                     <p>Ini deskripsi</p>
                                 </div>
+                                <form action="entahkemana.php">
+                                    <button class="ui button">
+                                        Sell
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
