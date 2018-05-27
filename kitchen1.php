@@ -24,7 +24,6 @@ while($val = mysqli_fetch_assoc($N)){
     else echo "<span>Tunggu ".$v["diff"]." lagi.</span>";
     echo"</div>";
     echo"<div class='description'>";
-    echo"<p>Ini ceritanya kompor, jadi nanti bisa lihat makanan apa aja yang lagi dimasak disini</p>";
     echo"</div>";
     if($v["diff"]==0){
         echo"<form action='addstorage.php' method='get'>";

@@ -149,28 +149,9 @@
                 </div>
                 <div class="ui attached tab segment" data-tab="ingredient-market">
                     <div class="ui divided items">
-                        <div class="item">
-                            <div class="image">
-                                <img src="images/wireframe/image.png">
-                            </div>
-                            <div class="content">
-                                <a class="header">Satu</a>
-                                <div class="meta">
-                                    <span>Ini meta / harga</span>
-                                </div>
-                                <div class="description">
-                                    <p>Ini deskripsi</p>
-                                </div>
-                                <div class="ui centered grid" style="display: flex; margin-top: 35px">
-                                    <form action="">
-                                        <button class="ui positive button">Buy</button>
-                                    </form>
-                                    <form action="">
-                                        <button class="ui button">Sell</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                        <?php
+                        include 'ingredientmarket.php'; 
+                        ?>
                     </div>
                 </div>
                 <div class="ui attached tab segment" data-tab="scoreboard">
