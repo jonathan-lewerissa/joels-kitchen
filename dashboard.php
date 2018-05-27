@@ -74,22 +74,42 @@
                     </div>
                     <div class="ui attached tab segment" data-tab="food-menu">
                         <div class="ui divided items">
-                            <div class="item">
-                                <div class="image">
-                                    <img src="images/wireframe/image.png">
-                                </div>
-                                <div class="content">
-                                    <a class="header">Nama makanan</a>
-                                    <div class="meta">
-                                        <span>Harga jual makanan sekarang</span>
-                                    </div>
-                                    <div class="description">
-                                        <p>Deskripsi bahan-bahannya</p>
-                                    </div>
-                                    <button class="ui right floated button" action="cooking.php">Cook this!</button>
-<!--                                    buat passing ke parameter cooking.php pke GET aja, mungkin bisa pke modal juga-->
-                                </div>
-                            </div>
+                            <?php
+                            $conn = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
+                            $sql = "call sp_show_masakan()";
+                            $N=mysqli_query($conn,$sql);
+                            //echo "$sql";
+                            while($val = mysqli_fetch_assoc($N)){
+                                echo "<div class='item'>";
+                                echo "<div class='image'>";
+                                echo "<img src='images/wireframe/image.png'>";
+                                echo "</div>";
+                                echo "<div class='content'>";
+                                echo "<a class='header'>".$val["nama_masakan"]."</a>";
+                                echo "<div class='meta'>";
+                                echo "<span>".$val["harga_masakan"]."</span>";
+                                echo "</div>";
+                                echo "<div class='description'>";
+                                $sq = "call sp_list_bahan(".$val["id_masakan"].")";
+                                //echo "$sq";
+                                $con = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
+                                $Q = mysqli_query($con,$sq);
+                                //echo mysqli_fetch_assoc($Q);
+                                echo "<p>";
+                                while($q = mysqli_fetch_assoc($Q)){
+                                    echo $q["namabahan"]." (".$q["ukuran_bahan"].") <br>";
+                                }
+                                echo "</p>";
+                                echo "</div>";
+                                echo "<form action = 'cooking.php' method='get'>";
+                                echo "<input type='hidden' name='id' value=".$val["id_masakan"].">";
+                                echo "<button class='ui right floated button'type ='submit'>Cook this!</button>";
+                                echo "</form>";
+                                echo "</div>";
+                                echo "</div>";
+                            }
+                            ?>
+
                         </div>
                         <div class="ui divided items">
                             <div class="item">
