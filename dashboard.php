@@ -56,6 +56,7 @@
             <div class="twelve wide column">
                 <div class="ui grid" id="context1">
                     <div class="ui attached tab segment active" data-tab="kitchen">
+                        <button action="cooking.php"><a href="cooking.php">Cook</a></button>
                         <div class="ui divided items">
                             <div class="item">
                                 <div class="image">
