@@ -67,153 +67,18 @@
         </div>
         <div class="ui top aligned center aligned grid">
             <div class="sixteen wide column">
-                <div class="ui grid" id="context1">
-                    <div class="ui attached tab segment active" data-tab="kitchen">
-                        <div class="ui divided items">
-                            <?php
-                            $conn = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
-                            $sql = "call sp_show_dapur(".$_SESSION["idplayer"].")";
-                            //echo $sql;
-                            $N=mysqli_query($conn,$sql);
-                            while($val = mysqli_fetch_assoc($N)){
-                                echo "<div class='item'>";
-                                echo"<div class='image'>";
-                                echo"<img src='images/wireframe/image.png'>";
-                                echo"</div>";
-                                echo"<div class='content'>";
-                                $conn = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
-                                $sq="call sp_show_nama_masakan(".$val["idmasakan"].")";
-                                $que = mysqli_query($conn,$sq);
-                                $hsl = mysqli_fetch_assoc($que);
-                                echo"<a class='header'>".$hsl["nama_masakan"]."</a>";
-                                echo "<div class='meta'>";
-                                $sq = "call sp_diff_second(".$val["idmasakan"].", ".$_SESSION["idplayer"].", ".$val["nomor_kompor"].")";
-                                //echo $sq;
-                                $conn = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
-                                $n=mysqli_query($conn,$sq);
-                                $v=mysqli_fetch_assoc($n);
-                                if($v["diff"]==0) echo "<span>Sudah matang!</span>";
-                                else echo "<span>Tunggu ".$v["diff"]." lagi.</span>";
-                                echo"</div>";
-                                echo"<div class='description'>";
-                                echo"<p>Ini ceritanya kompor, jadi nanti bisa lihat makanan apa aja yang lagi dimasak disini</p>";
-                                echo"</div>";
-                                echo"</div>";
-                                echo"</div>";
-                            }
-                            ?>
-                        </div>
-                    </div>
-                    <div class="ui attached tab segment" data-tab="food-menu">
-                        <div class="ui divided items">
-                            <?php
-                            $conn = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
-                            $sql = "call sp_show_masakan()";
-                            $N=mysqli_query($conn,$sql);
-                            //echo "$sql";
-                            while($val = mysqli_fetch_assoc($N)){
-                                echo "<div class='item'>";
-                                echo "<div class='image'>";
-                                echo "<img src='images/wireframe/image.png'>";
-                                echo "</div>";
-                                echo "<div class='content'>";
-                                echo "<a class='header'>".$val["nama_masakan"]."</a>";
-                                echo "<div class='meta'>";
-                                echo "<span>".$val["harga_masakan"]."</span>";
-                                echo "</div>";
-                                echo "<div class='description'>";
-                                $sq = "call sp_list_bahan(".$val["id_masakan"].")";
-                                echo "$sq";
-                                $conn = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
-                                $Q = mysqli_query($conn,$sq);
-                                //echo mysqli_fetch_assoc($Q);
-                                echo "<p>";
-                                while($q = mysqli_fetch_assoc($Q)){
-                                    echo $q["namabahan"]." (".$q["ukuran_bahan"].") <br>";
-                                }
-                                echo "</p>";
-                                echo "</div>";
-                                echo "<form action = 'cooking.php' method='get'>";
-                                echo "<input type='hidden' name='id' value=".$val["id_masakan"].">";
-                                echo "<button class='ui right floated button' type ='submit'>Cook this!</button>";
-                                echo "</form>";
-                                echo "</div>";
-                                echo "</div>";
-                            }
-                            ?>
-            <div class="ui grid segment" id="context1">
                 <div class="ui attached tab segment active" data-tab="kitchen">
                     <div class="ui divided items">
-                        <div class="item">
-                            <div class="image">
-                                <img src="images/wireframe/image.png">
-                            </div>
-                            <div class="content">
-                                <a class="header">Kompor Satu</a>
-                                <div class="meta">
-                                    <span>Deskripsi yang dimasak</span>
-                                </div>
-                                <div class="description">
-                                    <p>Ini ceritanya kompor, jadi nanti bisa lihat makanan apa aja yang lagi dimasak disini</p>
-                                </div>
-                            </div>
-                        </div>
+                        <?php
+                        include 'kitchen1.php';
+                        ?>
                     </div>
                 </div>
                 <div class="ui attached tab segment" data-tab="food-menu">
                     <div class="ui divided items">
                         <?php
-                        $sql = "call sp_show_masakan()";
-                        $N=mysqli_query($conn,$sql);
-                        //echo "$sql";
-                        while($val = mysqli_fetch_assoc($N)){
-                            echo "<div class='item'>";
-                            echo "<div class='image'>";
-                            echo "<img src='images/wireframe/image.png'>";
-                            echo "</div>";
-                            echo "<div class='content'>";
-                            echo "<a class='header'>".$val["nama_masakan"]."</a>";
-                            echo "<div class='meta'>";
-                            echo "<span>".$val["harga_masakan"]."</span>";
-                            echo "</div>";
-                            echo "<div class='description'>";
-                            $sq = "call sp_list_bahan(".$val["id_masakan"].")";
-                            //echo "$sq";
-                            $Q = mysqli_query($conn,$sq);
-                            //echo mysqli_fetch_assoc($Q);
-                            echo "<p>";
-                            while($q = mysqli_fetch_assoc($Q)){
-                                echo $q["namabahan"]." (".$q["ukuran_bahan"].") <br>";
-
-                            }
-                            echo "</p>";
-                            echo "</div>";
-                            echo "<form action = 'cooking.php' method='get'>";
-                            echo "<input type='hidden' name='id' value=".$val["id_masakan"].">";
-                            echo "<button class='ui right floated button' type ='submit'>Cook this!</button>";
-                            echo "</form>";
-                            echo "</div>";
-                            echo "</div>";
-                        }
+                        include 'foodmenu1.php';
                         ?>
-                    </div>
-                    <div class="ui divided items">
-                        <div class="item">
-                            <div class="image">
-                                <img src="images/wireframe/image.png">
-                            </div>
-                            <div class="content">
-                                <a class="header">Nama makanan</a>
-                                <div class="meta">
-                                    <span>Harga jual makanan sekarang</span>
-                                </div>
-                                <div class="description">
-                                    <p>Deskripsi bahan-bahannya</p>
-                                </div>
-                                <button class="ui right floated button" action="cooking.php">Cook this!</button>
-                                <!-- buat passing ke parameter cooking.php pke GET aja, mungkin bisa pke modal juga-->
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="ui attached tab segment" data-tab="storage">
