@@ -1,9 +1,9 @@
 <?php
     session_start();
-//    include("include/_conn.php"); // buat ngambil variable $conn
-//    if(!isset($_SESSION["login"])||!$_SESSION["login"]){
-//        header("Location: index.php");
-//    }
+    include("include/_conn.php"); // buat ngambil variable $conn
+    if(!isset($_SESSION["login"])){
+        header("Location: index.php");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -57,9 +57,10 @@
                 <div class="right menu">
                     <div class="ui simple dropdown item">
                         <i class="user icon"></i>
+                        <?=$_SESSION['username']?>
                         <div class="menu">
                             <a class="item">Update user info</a>
-                            <a class="item">Logout</a>
+                            <a class="item" href="actions/logout.php">Logout</a>
                         </div>
                     </div>
                 </div>
