@@ -1,10 +1,11 @@
 <?php
     session_start();
-    include("include/_conn.php"); // buat ngambil variable $conn
-    if(!isset($_SESSION["login"])||!$_SESSION["login"]){
-        header("Location: index.php");
-    }
+//    include("include/_conn.php"); // buat ngambil variable $conn
+//    if(!isset($_SESSION["login"])||!$_SESSION["login"]){
+//        header("Location: index.php");
+//    }
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -65,29 +66,7 @@
             </div>
         </div>
         <div class="ui top aligned center aligned grid">
-<<<<<<< HEAD
-            <div class="three wide column">
-                <div class="ui sticky">
-                    <div class="ui vertical fluid attached tabular menu" id="side-menu">
-                        <a class="item active" data-tab="kitchen">
-                            Kitchen
-                        </a>
-                        <a class="item" data-tab="food-menu">
-                            Food menu
-                        </a>
-                        <a class="item" data-tab="storage">
-                            Storage
-                        </a>
-                        <a class="item" data-tab="food-market">
-                            Food market
-                        </a>
-                        <a class="item" data-tab="ingredient-market">
-                            Ingredients market
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="thirteen wide column">
+            <div class="sixteen wide column">
                 <div class="ui grid" id="context1">
                     <div class="ui attached tab segment active" data-tab="kitchen">
                         <div class="ui divided items">
@@ -160,7 +139,8 @@
                                 echo "</form>";
                                 echo "</div>";
                                 echo "</div>";
-=======
+                            }
+                            ?>
             <div class="ui grid segment" id="context1">
                 <div class="ui attached tab segment active" data-tab="kitchen">
                     <div class="ui divided items">
@@ -204,7 +184,7 @@
                             echo "<p>";
                             while($q = mysqli_fetch_assoc($Q)){
                                 echo $q["namabahan"]." (".$q["ukuran_bahan"].") <br>";
->>>>>>> 1b5fb90cd4f4ddd1f70d2605eb6aacf8d4eac618
+
                             }
                             echo "</p>";
                             echo "</div>";
@@ -216,9 +196,6 @@
                             echo "</div>";
                         }
                         ?>
-
-<<<<<<< HEAD
-=======
                     </div>
                     <div class="ui divided items">
                         <div class="item">
@@ -236,7 +213,6 @@
                                 <button class="ui right floated button" action="cooking.php">Cook this!</button>
                                 <!-- buat passing ke parameter cooking.php pke GET aja, mungkin bisa pke modal juga-->
                             </div>
->>>>>>> 1b5fb90cd4f4ddd1f70d2605eb6aacf8d4eac618
                         </div>
                     </div>
                 </div>
