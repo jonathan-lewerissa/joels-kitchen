@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 27, 2018 at 09:33 AM
+-- Generation Time: May 27, 2018 at 11:12 AM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.0.29
 
@@ -58,23 +58,28 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_beli_masakan` (`p_idmasakan` INT
 	end if;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_cek_bisa_memasak` (`p_id_masakan` INT, `p_id_player` INT)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_cek_bisa_memasak` (IN `p_id_player` INT, `p_id_masakan` INT)  BEGIN
 	set @banyakbahandibutuhkan  = (select count(*) from detil_bahan_masakan where 'idmasakan' = 'p_id_masakan');
     set @banyakbahantersedia = (select count(*) from detil_chef_bahan cross join detil_bahan_masakan 
     where detil_bahan_masakan.idmasakan = p_id_masakan and detil_chef_bahan.idbahan = detil_bahan_masakan.idbahan
     and detil_chef_bahan.idplayer = p_id_player and detil_chef_bahan.jumlah >= detil_bahan_masakan.ukuran_bahan);
-    if(@banyakbahantersedia < @banyakbahandibutuhkan) then
+	if(@banyakbahantersedia < @banyakbahandibutuhkan) then
 		select -1, "bahan tidak cukup";
 	else
-		update player set kompor_size = (select kompor_size from player where id_player = p_id_player) -1 where id_player = p_id_player;
-		set @i = 1;
-        while @i <= 4 do
-			if not exists(select 1 from detil_isi_dapur where idchef = p_id_player and nomor_kompor = i) then
-				insert into detil_isi_dapur values(p_id_masakan, p_id_player, now(), i);
-                set @i = 5;
-			else set @i = @i + 1;
-			end if;
-		end while;
+		set @kompor = (select kompor_size from player where id_player = p_id_player);
+		if @kompor = 0 then
+			select -1 as 'error';
+		else
+			update player set kompor_size = @kompor where id_player = p_id_player;
+			set @i = 1;
+			while @i <= 4 do
+				if not exists(select 1 from detil_isi_dapur where idchef = p_id_player and nomor_kompor = @i) then
+					insert into detil_isi_dapur values(p_id_masakan, p_id_player, now(), @i);
+					set @i = 5;
+				else set @i = @i + 1;
+				end if;
+			end while;
+		end if;
         select p_id_player,idbahan, ukuran_bahan from detil_bahan_masakan where idmasakan = p_id_masakan;
     end if;
 END$$
@@ -89,6 +94,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_cek_matang` (`p_id_player` INT) 
     and masakan.lama_pembuatan <= time_to_sec(datediff(now(),detil_isi_dapur.jam_mulai_masak));
     
     
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_diff_second` (`p_idmasakan` INT, `p_id_player` INT, `p_nomorkompor` INT)  BEGIN
+	set @lama = (select lama_pembuatan from masakan where id_masakan = p_idmasakan);
+	set @waktu = (select jam_mulai_masak from detil_isi_dapur where idchef = p_id_player and nomor_kompor = p_nomorkompor);
+	set @diff = time_to_sec(datediff(@waktu, now()));
+	select @diff as diff, @waktu;
+          
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_edit_password` (`p_username` VARCHAR(20), `p_newpassword` VARCHAR(50), `p_oldpassword` VARCHAR(50))  BEGIN
@@ -137,7 +150,7 @@ where detil_bahan_masakan.idmasakan = p_idmasakan and detil_bahan_masakan.idbaha
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_login_player` (IN `p_username` VARCHAR(45), IN `p_password` VARCHAR(100))  BEGIN
 	IF EXISTS(SELECT 1 FROM `player` 
 		where `username`=p_username and `password`= md5(p_password)) THEN
-		update `player` set `last_login` = now() where `email` = p_email;
+		update `player` set `last_login` = now() where `username` = p_username;
 		SELECT * from player where username = p_username;
 	ELSE
 		SELECT -1 as error, "maaf username / password tidak dikenal";
@@ -154,8 +167,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_register_player` (IN `p_username
 	end if;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_show_dapur` (IN `p_id_player` INT)  NO SQL
+select * from detil_isi_dapur where idchef = p_id_player$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_show_masakan` ()  NO SQL
 select * from masakan$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_show_nama_masakan` (IN `p_idmasakan` INT)  NO SQL
+select nama_masakan from masakan where id_masakan = p_idmasakan$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_update_dapur_dan_masakan` (`p_id_player` INT, `p_no_kompor` INT)  BEGIN
 	set @id = (select idmasakan from detil_isi_dapur where idchef = p_id_player and nomor_kompor = p_no_kompor);
@@ -330,6 +349,17 @@ CREATE TABLE `detil_chef_bahan` (
   `jumlah` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `detil_chef_bahan`
+--
+
+INSERT INTO `detil_chef_bahan` (`idplayer`, `idbahan`, `jumlah`) VALUES
+(5, 3, 4),
+(5, 1, 4),
+(5, 4, 2),
+(5, 5, 0),
+(5, 6, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -350,11 +380,20 @@ CREATE TABLE `detil_chef_masakan` (
 --
 
 CREATE TABLE `detil_isi_dapur` (
-  `idmasakan` int(11) NOT NULL,
+  `idmasakan` int(11) DEFAULT NULL,
   `idchef` int(11) DEFAULT NULL,
   `jam_mulai_masak` datetime DEFAULT NULL,
   `nomor_kompor` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `detil_isi_dapur`
+--
+
+INSERT INTO `detil_isi_dapur` (`idmasakan`, `idchef`, `jam_mulai_masak`, `nomor_kompor`) VALUES
+(1, 5, '2018-05-27 15:06:13', 1),
+(1, 5, '2018-05-27 15:26:35', 2),
+(1, 5, '2018-05-27 15:26:43', 3);
 
 -- --------------------------------------------------------
 
@@ -429,7 +468,7 @@ INSERT INTO `player` (`id_player`, `username`, `fullname`, `email`, `password`, 
 (2, 'aaaa', 'aaaa', 'aaaa', '74b87337454200d4d33f80c4663dc5e5', 100000, NULL, 10, NULL, 4),
 (3, 'bbbb', 'bbbb', 'bbbb@gmail.com', '098f6bcd4621d373cade4e832627b4f6', 100000, NULL, 10, '2018-05-16 00:35:17', 4),
 (4, 'lita', 'lita', 'lita@gmail.com', 'd6022249ddb33ec5a4e89e31df57cc67', 100000, NULL, 10, NULL, 4),
-(5, 'nurlita', 'Lita', 'nurlita16@mhs.if.its.ac.id', '952ec79417b8f841757747a448a7bc3f', 100000, NULL, 10, NULL, 4),
+(5, 'nurlita', 'Lita', 'nurlita16@mhs.if.its.ac.id', '952ec79417b8f841757747a448a7bc3f', 100000, NULL, 10, '2018-05-27 16:04:09', 4),
 (6, 'litaaa', 'Lita', 'nurlitadf17@gmail.com', '952ec79417b8f841757747a448a7bc3f', 100000, NULL, 10, NULL, 4);
 
 -- --------------------------------------------------------
@@ -539,8 +578,8 @@ ALTER TABLE `detil_chef_masakan`
 -- Indexes for table `detil_isi_dapur`
 --
 ALTER TABLE `detil_isi_dapur`
-  ADD PRIMARY KEY (`idmasakan`),
-  ADD KEY `fk_player_did_idx` (`idchef`);
+  ADD KEY `fk_player_did_idx` (`idchef`),
+  ADD KEY `fk_masakan_did` (`idmasakan`);
 
 --
 -- Indexes for table `market_bahan`
