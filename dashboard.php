@@ -112,49 +112,13 @@
                         Foods
                     </div>
                     <div class="ui divided items">
-                        <div class="item">
-                            <div class="image">
-                                <img src="images/wireframe/image.png">
-                            </div>
-                            <div class="content">
-                                <a class="header">Satu</a>
-                                <div class="meta">
-                                    <span>Ini meta / harga</span>
-                                </div>
-                                <div class="description">
-                                    <p>Ini deskripsi</p>
-                                </div>
-                                <form action="entahkemana.php">
-                                    <button class="ui button">
-                                        Sell
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
+                        <?php include 'storage1.php'; ?>
                     </div>
                     <div class="ui horizontal divider">
                         Ingredients
                     </div>
                     <div class="ui divided items">
-                        <div class="item">
-                            <div class="image">
-                                <img src="images/wireframe/image.png">
-                            </div>
-                            <div class="content">
-                                <a class="header">Satu</a>
-                                <div class="meta">
-                                    <span>Ini meta / harga</span>
-                                </div>
-                                <div class="description">
-                                    <p>Ini deskripsi</p>
-                                </div>
-                                <form action="entahkemana.php">
-                                    <button class="ui button">
-                                        Sell
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
+                        <?php include 'storage2.php'; ?>
                     </div>
                 </div>
                 <div class="ui attached tab segment" data-tab="food-market">
