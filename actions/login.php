@@ -9,7 +9,7 @@
 //    }
     $sql="call sp_login_player('".$_POST["username"]."','".$_POST["password"]."')";
     echo $sql;
-    $N=mysqli_query($mysqli,$sql);
+    $N=mysqli_query($conn,$sql);
     $val = mysqli_fetch_assoc($N);
     if(isset($val["error"])){
         echo "hehe";
