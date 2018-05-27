@@ -108,6 +108,28 @@
                     </div>
                 </div>
                 <div class="ui attached tab segment" data-tab="storage">
+                    <div class="ui horizontal divider">
+                        Foods
+                    </div>
+                    <div class="ui divided items">
+                        <div class="item">
+                            <div class="image">
+                                <img src="images/wireframe/image.png">
+                            </div>
+                            <div class="content">
+                                <a class="header">Satu</a>
+                                <div class="meta">
+                                    <span>Ini meta / harga</span>
+                                </div>
+                                <div class="description">
+                                    <p>Ini deskripsi</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui horizontal divider">
+                        Ingredients
+                    </div>
                     <div class="ui divided items">
                         <div class="item">
                             <div class="image">
