@@ -9,7 +9,7 @@
 //    }
     $sql="call sp_login_player('".$_POST["username"]."','".$_POST["password"]."')";
     echo $sql;
-    $N=mysqli_query($conn,$sql);
+    $N=mysqli_query($mysqli,$sql);
     $val = mysqli_fetch_assoc($N);
     if(isset($val["error"])){
         echo "hehe";
@@ -19,12 +19,12 @@
     }
     else{
     	$_SESSION["login"]=true;
+        $_SESSION["idplayer"]=$val["id_player"];
     	$_SESSION["username"]=$val["username"];
     	$_SESSION["fullname"]=$val["fullname"];
-    	$_SESSION["email"]=$val["EMAIL"];
-    	$_SESSION["password"]=$val["PASSWORD"];
     	$_SESSION["money"]=$val["money"];
         $_SESSION["kompor_size"]=$val["kompor_size"];
+        echo $val["id_player"];
     	header("Location: ../dashboard.php",true,301);
     	exit();
     }
