@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0.1
+-- version 4.8.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 27, 2018 at 03:42 PM
--- Server version: 10.1.32-MariaDB
--- PHP Version: 7.2.5
+-- Generation Time: May 27, 2018 at 04:14 PM
+-- Server version: 10.1.31-MariaDB
+-- PHP Version: 7.0.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -180,10 +180,10 @@ select * from masakan$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_show_nama_masakan` (IN `p_idmasakan` INT)  NO SQL
 select nama_masakan from masakan where id_masakan = p_idmasakan$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_update_dapur_dan_masakan` (`p_id_player` INT, `p_no_kompor` INT)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_update_dapur_dan_masakan` (IN `p_id_player` INT, IN `p_no_kompor` INT)  BEGIN
 	set @id = (select idmasakan from detil_isi_dapur where idchef = p_id_player and nomor_kompor = p_no_kompor);
     update detil_chef_masakan set jumlah = (select jumlah from detil_isi_dapur where idchef = p_id_player and nomor_kompor = p_no_kompor) +1
-    where idchef = p_id_player and nomor_kompor = p_no_kompor;
+    where idchef = p_id_player;
 	delete from detil_isi_dapur where idchef = p_id_player and nomor_kompor = p_no_kompor;
 END$$
 
@@ -358,11 +358,11 @@ CREATE TABLE `detil_chef_bahan` (
 --
 
 INSERT INTO `detil_chef_bahan` (`idplayer`, `idbahan`, `jumlah`) VALUES
-(5, 3, 4),
-(5, 1, 4),
-(5, 4, 2),
-(5, 5, 0),
-(5, 6, 3);
+(5, 3, 3),
+(5, 1, 3),
+(5, 4, -1),
+(5, 5, -5),
+(5, 6, 1);
 
 -- --------------------------------------------------------
 
@@ -395,13 +395,13 @@ CREATE TABLE `detil_isi_dapur` (
 --
 
 INSERT INTO `detil_isi_dapur` (`idmasakan`, `idchef`, `jam_mulai_masak`, `nomor_kompor`) VALUES
-(1, 5, '2018-05-27 15:06:13', 1),
 (1, 5, '2018-05-27 15:26:35', 2),
 (1, 5, '2018-05-27 15:26:43', 3),
 (1, 7, '2018-05-27 17:27:29', 1),
 (2, 7, '2018-05-27 17:27:36', 2),
 (1, 7, '2018-05-27 19:10:08', 3),
-(3, 7, '2018-05-27 20:33:46', 4);
+(3, 7, '2018-05-27 20:33:46', 4),
+(1, 5, '2018-05-27 21:05:26', 4);
 
 -- --------------------------------------------------------
 
