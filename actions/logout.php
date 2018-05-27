@@ -7,6 +7,6 @@
  */
 session_start();
 session_destroy();
-//header("Location: ../index.php",true,301);
+header("Location: ../index.php",true,301);
 die();
 ?>
