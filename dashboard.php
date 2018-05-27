@@ -103,7 +103,7 @@
                 <div class="ui attached tab segment" data-tab="food-menu">
                     <div class="ui divided items">
                         <?php
-                        include 'foodmenu1.php';
+                            include 'foodmenu1.php';
                         ?>
                     </div>
                 </div>

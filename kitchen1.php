@@ -26,6 +26,7 @@ while($val = mysqli_fetch_assoc($N)){
     echo"<div class='description'>";
     echo"<p>Ini ceritanya kompor, jadi nanti bisa lihat makanan apa aja yang lagi dimasak disini</p>";
     echo"</div>";
+    echo "<button class='ui positive button'>Tambah ke storage</button>";
     echo"</div>";
     echo"</div>";
 }
