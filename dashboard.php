@@ -65,14 +65,14 @@
                     <div class="ui simple dropdown item">
                         <i class="user icon"></i>
                         <?=$_SESSION['username']?>
-                        <?php
-                            $conn = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
-                            $sq ="call sp_show_detil_player(".$_SESSION["idplayer"].")";
-                            //echo $sq;
-                            $qu = mysqli_query($conn,$sq);
-                            $va = mysqli_fetch_assoc($qu);
-                            $_SESSION['money']=$va["money"];
-                        ?>
+<!--                        --><?php
+//                            $conn = mysqli_connect('localhost', 'root', '', "vkvxweok_mbd_05111640000092") or die($error);
+//                            $sq ="call sp_show_detil_player(".$_SESSION["idplayer"].")";
+//                            //echo $sq;
+//                            $qu = mysqli_query($conn,$sq);
+//                            $va = mysqli_fetch_assoc($qu);
+//                            $_SESSION['money']=$va["money"];
+//                        ?>
                         <?= ', '.$_SESSION['money'].' coins'?>
                         <div class="menu">
                             <a class="item" id="changepass">Update password</a>
